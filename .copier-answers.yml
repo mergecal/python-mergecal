@@ -1,0 +1,22 @@
+# Changes here will be overwritten by Copier
+_commit: 7c035ec
+_src_path: gh:browniebroke/pypackage-template
+add_me_as_contributor: true
+cli_name: mergecal
+copyright_year: '2024'
+documentation: true
+email: abe@habet.dev
+full_name: Abe Hanoka
+github_username: abe-101
+has_cli: true
+initial_commit: false
+is_django_package: false
+open_source_license: GNU General Public License v3
+package_name: mergecal
+project_name: Python MergeCal
+project_short_description: A Python library to merge iCalendar feeds.
+project_slug: mergecal
+run_poetry_install: true
+setup_github: false
+setup_pre_commit: true
+
