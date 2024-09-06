@@ -1,4 +1,4 @@
-from __future__ import annotations
+from typing import Optional
 
 from icalendar import Calendar
 
@@ -14,10 +14,10 @@ class CalendarMerger:
     def __init__(
         self,
         calendars: list[Calendar],
-        prodid: str | None = None,
+        prodid: Optional[str] = None,
         version: str = "2.0",
-        calscale: str | None = None,
-        method: str | None = None,
+        calscale: Optional[str] = None,
+        method: Optional[str] = None,
     ):
         if not calendars:
             raise ValueError("At least one calendar must be provided")
