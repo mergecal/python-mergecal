@@ -1,5 +1,4 @@
 from pathlib import Path
-from typing import List, Optional
 
 import typer
 from icalendar import Calendar
@@ -21,11 +20,11 @@ method_opt = typer.Option(None, "--method", help="Calendar method")
 
 @app.command()
 def main(
-    calendars: List[Path] = calendars_arg,
+    calendars: list[Path] = calendars_arg,
     output: Path = output_opt,
-    prodid: Optional[str] = prodid_opt,
-    calscale: Optional[str] = calscale_opt,
-    method: Optional[str] = method_opt,
+    prodid: str | None = prodid_opt,
+    calscale: str | None = calscale_opt,
+    method: str | None = method_opt,
 ) -> None:
     """Merge multiple iCalendar files into one."""
     try:
