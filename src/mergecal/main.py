@@ -1,36 +1,58 @@
-from typing import List
+from typing import Any, List, Optional
 
 from icalendar import Calendar
 
 
-def merge(calendars: List[Calendar]) -> Calendar:
-    """
-    Merge multiple Calendar objects into a single calendar.
+def generate_default_prodid() -> str:
+    """Generate a default PRODID."""
+    return "-//mergecal.org//MergeCal//EN"
 
-    Args:
-    calendars (List[Calendar]): List of calendars to merge
 
-    Returns:
-    Calendar: Merged calendar
+class CalendarMerger:
+    """Merge multiple calendars into one."""
 
-    """
-    merged_cal = Calendar()
+    def __init__(
+        self,
+        calendars: List[Calendar],
+        prodid: Optional[str] = None,
+        version: str = "2.0",
+        calscale: Optional[str] = None,
+        method: Optional[str] = None,
+    ):
+        if not calendars:
+            raise ValueError("At least one calendar must be provided")
 
-    # Copy properties from the first calendar
-    for prop in calendars[0].property_items():
-        if prop[0] != "VERSION":  # Skip VERSION as we'll set it explicitly
-            merged_cal.add(prop[0], prop[1])
+        self.merged_calendar = Calendar()
 
-    # Ensure the VERSION is set to 2.0
-    merged_cal["VERSION"] = "2.0"
+        # Set required properties
+        self.merged_calendar.add("prodid", prodid or generate_default_prodid())
+        self.merged_calendar.add("version", version)
 
-    # Merge components (events, todos, etc.) from all calendars
-    for cal in calendars:
-        for component in cal.walk():
-            if component.name != "VCALENDAR":
-                merged_cal.add_component(component)
+        # Set optional properties if provided
+        if calscale:
+            self.merged_calendar.add("calscale", calscale)
+        if method:
+            self.merged_calendar.add("method", method)
 
-    return merged_cal
+        self.calendars: List[Calendar] = calendars
+
+    def add_calendar(self, calendar: Calendar) -> None:
+        """Add a calendar to be merged."""
+        self.calendars.append(calendar)
+
+    def merge(self) -> Calendar:
+        """Merge the calendars."""
+        for cal in self.calendars:
+            for component in cal.walk("VEVENT"):
+                self.merged_calendar.add_component(component)
+
+        return self.merged_calendar
+
+
+def merge_calendars(calendars: List[Calendar], **kwargs: Any) -> Calendar:
+    """Convenience function to merge calendars."""
+    merger = CalendarMerger(calendars, **kwargs)
+    return merger.merge()
 
 
 # Keep the original add function for backward compatibility

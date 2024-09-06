@@ -42,18 +42,52 @@ A Python library to merge iCalendar feeds.
 
 ## Installation
 
-Install this via pip (or your favourite package manager):
+Install this via pip (or your favorite package manager):
 
-`pip install mergecal`
+```bash
+pip install mergecal
+```
+
+## Usage
+
+### Python API
+
+You can use MergeCal in your Python code as follows:
 
 ```python
 import mergecal
-import icalendar
+from icalendar import Calendar
 
-calendar1 = icalendar.Calendar.from_ical("...")
-calendar2 = icalendar.Calendar.from_ical("...")
+# Load your calendars
+calendar1 = Calendar.from_ical(open("calendar1.ics", "rb").read())
+calendar2 = Calendar.from_ical(open("calendar2.ics", "rb").read())
 
-merged_cal = mergeal.merge([calendar1, calendar2], strategy="different-calendars")
+# Merge the calendars
+merger = mergecal.CalendarMerger([calendar1, calendar2])
+merged_cal = merger.merge()
+
+# Write the merged calendar to a file
+with open("merged_calendar.ics", "wb") as f:
+    f.write(merged_cal.to_ical())
+```
+
+### Command Line Interface (CLI)
+
+MergeCal also provides a command-line interface for easy merging of calendar files:
+
+```bash
+# Basic usage
+mergecal calendar1.ics calendar2.ics -o merged_calendar.ics
+
+# Specifying custom PRODID
+mergecal calendar1.ics calendar2.ics -o merged_calendar.ics --prodid "-//My Organization//MergeCal 1.0//EN"
+
+```
+
+For more options and information, use the help command:
+
+```bash
+mergecal --help
 ```
 
 ## Contributors ✨
