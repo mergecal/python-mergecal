@@ -16,11 +16,11 @@ CALENDARS_DIR = HERE / "calendars"
 def merge_func(calendars: list[str]) -> icalendar.Calendar:
     """Use the main merge function to merge the calendars."""
     icalendars = []
-    for calendar_path in calendars:
-        if not calendar_path.endswith(".ics"):
-            calendar_path += "/.ics"
-        with open(calendar_path, "rb") as cal_file:
-            icalendars.append(icalendar.Calendar.from_ical(cal_file.read()))
+    for calendar in calendars:
+        if not calendar.endswith(".ics"):
+            calendar += ".ics"
+        calendar_path = CALENDARS_DIR / calendar
+        icalendars.append(icalendar.Calendar.from_ical(calendar_path.read_bytes()))
     return merge_calendars(icalendars)
 
 
