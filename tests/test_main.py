@@ -2,7 +2,7 @@ from datetime import datetime
 
 from icalendar import Calendar, Event
 
-from mergecal.main import CalendarMerger
+from mergecal.calendar_merger import CalendarMerger
 
 
 def create_test_calendar(summary, dtstart):
