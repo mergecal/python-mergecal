@@ -53,9 +53,12 @@ version_variables = [
 build_command = "pip install poetry && poetry build"
 
 [tool.semantic_release.changelog]
+# These must be Python Regular Expression syntax
+# see https://github.com/python-semantic-release/python-semantic-release/issues/1019
 exclude_commit_patterns = [
     "chore*",
     "ci*",
+    "Merge pull request .*",
 ]
 
 [tool.semantic_release.changelog.environment]
