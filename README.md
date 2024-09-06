@@ -7,7 +7,7 @@
   <a href="https://mergecal.readthedocs.io">
     <img src="https://img.shields.io/readthedocs/mergecal.svg?logo=read-the-docs&logoColor=fff&style=flat-square" alt="Documentation Status">
   </a>
-  <a href="https://codecov.io/gh/abe-101/mergecal">
+  <a href="https://codecov.io/gh/mergecal/python-mergecal">
     <img src="https://img.shields.io/codecov/c/github/mergecal/python-mergecal.svg?logo=codecov&logoColor=fff&style=flat-square" alt="Test coverage percentage">
   </a>
 </p>
