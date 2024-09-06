@@ -1,11 +1,11 @@
 ---
 name: empty issue
-about: This is an unstructured issue template to use with issues that are not described,
+about:
+  This is an unstructured issue template to use with issues that are not described,
   yet.
-title: ''
-labels: ''
-assignees: ''
-
+title: ""
+labels: ""
+assignees: ""
 ---
 
 <!-- This is an unstructured issue template to use if you do not need guidance.
