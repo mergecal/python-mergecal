@@ -55,7 +55,4 @@ def merge_calendars(calendars: List[Calendar], **kwargs: Any) -> Calendar:
     return merger.merge()
 
 
-# Keep the original add function for backward compatibility
-def add(n1: int, n2: int) -> int:
-    """Add the arguments."""
-    return n1 + n2
+__all__ = ["CalendarMerger", "merge_calendars"]
