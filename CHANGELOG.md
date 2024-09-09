@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.3.0 (2024-09-09)
+
+### Feature
+
+- Add nicco as github sponsor ([`8b31bec`](https://github.com/mergecal/python-mergecal/commit/8b31becaaaf068d3268fafb5ce7cd1988f00e38e))
+
 ## v0.2.0 (2024-09-06)
 
 ### Refactor
@@ -12,6 +18,12 @@
 
 - Changelog creation ([`05b32df`](https://github.com/mergecal/python-mergecal/commit/05b32df73344fea188feb36eb4abe6981895ccd4))
 - Update dependency typer to ^0.12.0 ([`634b106`](https://github.com/mergecal/python-mergecal/commit/634b106fdbec9a3dd34cdd611825f5eb4cfe6053))
+
+### Test
+
+- Test merging two calendars ([`5c04d09`](https://github.com/mergecal/python-mergecal/commit/5c04d09b5799cc4b742fe298dcdda55e9ac372e1))
+- Fix tests ([`0051a2d`](https://github.com/mergecal/python-mergecal/commit/0051a2dc9824cf6ff9c1387d0a07aff4e5278a44))
+- Add test parametrization fixtures ([`fcd5c54`](https://github.com/mergecal/python-mergecal/commit/fcd5c54025969d858241ff96d172fab68a7f5199))
 
 ### Feature
 
