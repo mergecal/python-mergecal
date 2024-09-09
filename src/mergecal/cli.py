@@ -5,7 +5,7 @@ import typer
 from icalendar import Calendar
 from rich import print
 
-from .main import CalendarMerger
+from .calendar_merger import CalendarMerger
 
 app = typer.Typer()
 

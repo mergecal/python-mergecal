@@ -140,7 +140,7 @@ check_untyped_defs = true
 disallow_any_generics = true
 disallow_incomplete_defs = true
 disallow_untyped_defs = true
-mypy_path = "src/"
+mypy_path = "."
 no_implicit_optional = true
 show_error_codes = true
 warn_unreachable = true
@@ -148,6 +148,7 @@ warn_unused_ignores = true
 exclude = [
     'docs/.*',
     'setup.py',
+    'tests/*.py',
 ]
 
 [[tool.mypy.overrides]]
