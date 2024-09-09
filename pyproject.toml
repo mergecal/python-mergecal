@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "mergecal"
-version = "0.1.0"
+version = "0.2.0"
 description = "A Python library to merge iCalendar feeds."
 authors = ["Abe Hanoka <abe@habet.dev>"]
 license = "GNU General Public License v3"
@@ -26,7 +26,7 @@ packages = [
 mergecal = "mergecal.cli:app"
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.9"
 rich = ">=10"
 typer = {extras = ["all"], version = "^0.12.0"}
 icalendar = "^5.0.13"
@@ -53,9 +53,12 @@ version_variables = [
 build_command = "pip install poetry && poetry build"
 
 [tool.semantic_release.changelog]
+# These must be Python Regular Expression syntax
+# see https://github.com/python-semantic-release/python-semantic-release/issues/1019
 exclude_commit_patterns = [
     "chore*",
     "ci*",
+    "Merge pull request .*",
 ]
 
 [tool.semantic_release.changelog.environment]
@@ -91,7 +94,7 @@ exclude_lines = [
 ]
 
 [tool.ruff]
-target-version = "py38"
+target-version = "py39"
 line-length = 88
 
 [tool.ruff.lint]

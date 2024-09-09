@@ -1,4 +1,4 @@
-from typing import Any, List, Optional
+from typing import Optional
 
 from icalendar import Calendar
 
@@ -13,7 +13,7 @@ class CalendarMerger:
 
     def __init__(
         self,
-        calendars: List[Calendar],
+        calendars: list[Calendar],
         prodid: Optional[str] = None,
         version: str = "2.0",
         calscale: Optional[str] = None,
@@ -34,7 +34,7 @@ class CalendarMerger:
         if method:
             self.merged_calendar.add("method", method)
 
-        self.calendars: List[Calendar] = calendars
+        self.calendars: list[Calendar] = calendars
 
     def add_calendar(self, calendar: Calendar) -> None:
         """Add a calendar to be merged."""
@@ -49,9 +49,9 @@ class CalendarMerger:
         return self.merged_calendar
 
 
-def merge_calendars(calendars: List[Calendar], **kwargs: Any) -> Calendar:
+def merge_calendars(calendars: list[Calendar], **kwargs: object) -> Calendar:
     """Convenience function to merge calendars."""
-    merger = CalendarMerger(calendars, **kwargs)
+    merger = CalendarMerger(calendars, **kwargs)  # type: ignore
     return merger.merge()
 
 

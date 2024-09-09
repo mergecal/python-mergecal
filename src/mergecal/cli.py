@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import List, Optional
+from typing import Optional
 
 import typer
 from icalendar import Calendar
@@ -21,7 +21,7 @@ method_opt = typer.Option(None, "--method", help="Calendar method")
 
 @app.command()
 def main(
-    calendars: List[Path] = calendars_arg,
+    calendars: list[Path] = calendars_arg,
     output: Path = output_opt,
     prodid: Optional[str] = prodid_opt,
     calscale: Optional[str] = calscale_opt,
