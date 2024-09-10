@@ -15,7 +15,6 @@ output_opt = typer.Option(
     "merged_calendar.ics", "--output", "-o", help="Output file path"
 )
 prodid_opt = typer.Option(None, "--prodid", help="Product ID for the merged calendar")
-calscale_opt = typer.Option(None, "--calscale", help="Calendar scale")
 method_opt = typer.Option(None, "--method", help="Calendar method")
 
 
@@ -24,7 +23,6 @@ def main(
     calendars: list[Path] = calendars_arg,
     output: Path = output_opt,
     prodid: Optional[str] = prodid_opt,
-    calscale: Optional[str] = calscale_opt,
     method: Optional[str] = method_opt,
 ) -> None:
     """Merge multiple iCalendar files into one."""
@@ -35,7 +33,7 @@ def main(
                 calendar_objects.append(Calendar.from_ical(cal_file.read()))
 
         merger = CalendarMerger(
-            calendars=calendar_objects, prodid=prodid, calscale=calscale, method=method
+            calendars=calendar_objects, prodid=prodid, method=method
         )
         merged_calendar = merger.merge()
 
