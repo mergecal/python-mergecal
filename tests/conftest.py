@@ -70,3 +70,19 @@ for calendar_path in CALENDARS_DIR.iterdir():
 def calendars() -> ICSCalendars:
     """Fixture to easy access parsed calendars from the test/calendars directory."""
     return ICSCalendars()
+
+
+def doctest_print(obj):
+    """Doctest print."""
+    if isinstance(obj, bytes):
+        obj = obj.decode("UTF-8")
+    print(str(obj).strip().replace("\r\n", "\n").replace("\r", "\n"))
+
+
+@pytest.fixture()
+def env_for_doctest(monkeypatch):
+    """Modify the environment to make doctests run."""
+    return {
+        "print": doctest_print,
+        "CALENDARS": CALENDARS_DIR,
+    }

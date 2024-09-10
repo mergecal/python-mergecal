@@ -55,20 +55,30 @@ pip install mergecal
 You can use MergeCal in your Python code as follows:
 
 ```python
-import mergecal
-from icalendar import Calendar
+>>> from mergecal import merge_calendars
+>>> from icalendar import Calendar
 
 # Load your calendars
-calendar1 = Calendar.from_ical(open("calendar1.ics", "rb").read())
-calendar2 = Calendar.from_ical(open("calendar2.ics", "rb").read())
+# CALENDARS = pathlib.Path("to/your/calendar/directory")
+>>> calendar1 = Calendar.from_ical((CALENDARS / "one_event.ics").read_bytes())
+>>> calendar2 = Calendar.from_ical((CALENDARS / "another_event.ics").read_bytes())
 
 # Merge the calendars
-merger = mergecal.CalendarMerger([calendar1, calendar2])
-merged_cal = merger.merge()
+>>> merged_calendar : Calendar = merge_calendars([calendar1, calendar2])
 
 # Write the merged calendar to a file
-with open("merged_calendar.ics", "wb") as f:
-    f.write(merged_cal.to_ical())
+>>> with (CALENDARS / "merged_calendar.ics").open("wb") as f:
+...     f.write(merged_calendar.to_ical())
+559
+
+# The merged calendar will contain all the events of both calendars
+>>> [str(event["SUMMARY"]) for event in calendar1.walk("VEVENT")]
+['Event 1']
+>>> [str(event["SUMMARY"]) for event in calendar2.walk("VEVENT")]
+['Event 2']
+>>> [str(event["SUMMARY"]) for event in merged_calendar.walk("VEVENT")]
+['Event 1', 'Event 2']
+
 ```
 
 ### Command Line Interface (CLI)
