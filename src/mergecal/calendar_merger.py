@@ -16,7 +16,6 @@ class CalendarMerger:
         calendars: list[Calendar],
         prodid: Optional[str] = None,
         version: str = "2.0",
-        calscale: Optional[str] = None,
         method: Optional[str] = None,
     ):
         if not calendars:
@@ -29,8 +28,6 @@ class CalendarMerger:
         self.merged_calendar.add("version", version)
 
         # Set optional properties if provided
-        if calscale:
-            self.merged_calendar.add("calscale", calscale)
         if method:
             self.merged_calendar.add("method", method)
 
