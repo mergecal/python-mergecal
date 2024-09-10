@@ -1,5 +1,15 @@
 # Changelog
 
+## v0.3.1 (2024-09-10)
+
+### Fix
+
+- Update dependency rich to v13.8.1 ([`44f9750`](https://github.com/mergecal/python-mergecal/commit/44f97502921dee5d62c3babcaf62c80788670479))
+
+### Refactor
+
+- Remove --calscale option ([`dfeaf8c`](https://github.com/mergecal/python-mergecal/commit/dfeaf8cd466a08859cb29669d189a7b19eeb663b))
+
 ## v0.3.0 (2024-09-09)
 
 ### Feature
