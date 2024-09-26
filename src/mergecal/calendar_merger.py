@@ -1,11 +1,16 @@
 from typing import Optional
 
 from icalendar import Calendar
+from jinja2.nativetypes import NativeEnvironment
+from yaml import safe_load
 
 
 def generate_default_prodid() -> str:
     """Generate a default PRODID."""
     return "-//mergecal.org//MergeCal//EN"
+
+
+TYPE_TEMPLATE = dict[str, dict[str, str]]
 
 
 class CalendarMerger:
@@ -17,6 +22,7 @@ class CalendarMerger:
         prodid: Optional[str] = None,
         version: str = "2.0",
         method: Optional[str] = None,
+        template: str | TYPE_TEMPLATE = "",
     ):
         if not calendars:
             raise ValueError("At least one calendar must be provided")
@@ -33,12 +39,29 @@ class CalendarMerger:
 
         self.calendars: list[Calendar] = calendars
 
+        self.template: TYPE_TEMPLATE = (
+            safe_load(template) or {} if isinstance(template, str) else template
+        )
+
     def add_calendar(self, calendar: Calendar) -> None:
         """Add a calendar to be merged."""
         self.calendars.append(calendar)
 
     def merge(self) -> Calendar:
         """Merge the calendars."""
+        # template the calendar
+        env = NativeEnvironment()
+        calendar_template = self.template.get("VCALENDAR", {})
+        calendar_attributes_template = calendar_template.get(  # type: ignore
+            "attributes", {}
+        )
+        for attribute in sorted(calendar_attributes_template.keys()):  # type: ignore
+            attribute_template = calendar_attributes_template[attribute]
+            value = env.from_string(attribute_template).render(
+                calendars=self.calendars, attribute=attribute
+            )
+            self.merged_calendar.add(attribute, value)
+        # add events
         for cal in self.calendars:
             for component in cal.walk("VEVENT"):
                 self.merged_calendar.add_component(component)

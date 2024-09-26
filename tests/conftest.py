@@ -21,18 +21,20 @@ def merge_func(calendars: list[str], template: str = "") -> icalendar.Calendar:
             calendar += ".ics"
         calendar_path = CALENDARS_DIR / calendar
         icalendars.append(icalendar.Calendar.from_ical(calendar_path.read_bytes()))
-    return merge_calendars(icalendars)
+    return merge_calendars(icalendars, template=template)
 
 
 def merge_cli(calendars: list[str], template: str = "") -> None:
     """Use the main CLI to merge the calendars."""
     runner = CliRunner()
-    calendar_paths = []
+    arguments: list[str | Path] = []
+    if template:
+        arguments.extend(("--template", template))
     for calendar in calendars:
         if not calendar.endswith(".ics"):
             calendar += "/.ics"
-        calendar_paths.append(CALENDARS_DIR / calendar)
-    result = runner.invoke(app, calendar_paths)
+        arguments.append(CALENDARS_DIR / calendar)
+    result = runner.invoke(app, arguments)
     assert result.exit_code == 0, "Calendars should merge without error."
     return icalendar.Calendar.from_ical(result.output)
 

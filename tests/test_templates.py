@@ -6,10 +6,10 @@ MERGE_NAMES_TEMPLATE = """
 VCALENDAR:
     attributes:
         NAME: >
-            {{
-                ", ".join(calendar.get("NAME", calendar.get("X-WR-CALNAME"))
-                for calendar in calendars)
-            }}
+            {% for calendar in calendars -%}
+                {{ '' if loop.first else ', ' -}}
+                {{ calendar.get("NAME", calendar.get("X-WR-CALNAME")) -}}
+            {% endfor -%}
 """
 
 
