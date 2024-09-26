@@ -13,7 +13,7 @@ HERE = Path(__file__).parent
 CALENDARS_DIR = HERE / "calendars"
 
 
-def merge_func(calendars: list[str]) -> icalendar.Calendar:
+def merge_func(calendars: list[str], template: str = "") -> icalendar.Calendar:
     """Use the main merge function to merge the calendars."""
     icalendars = []
     for calendar in calendars:
@@ -24,7 +24,7 @@ def merge_func(calendars: list[str]) -> icalendar.Calendar:
     return merge_calendars(icalendars)
 
 
-def merge_cli(calendars: list[str]) -> None:
+def merge_cli(calendars: list[str], template: str = "") -> None:
     """Use the main CLI to merge the calendars."""
     runner = CliRunner()
     calendar_paths = []
