@@ -1,5 +1,15 @@
 # Changelog
 
+## v0.3.2 (2024-10-01)
+
+### Fix
+
+- Update dependency rich to v13.9.1 ([`a1515db`](https://github.com/mergecal/python-mergecal/commit/a1515dbc1139b0b85cae2bd51710674db5329165))
+
+### Test
+
+- Add doctest to markdown and modules ([`e9a0fc7`](https://github.com/mergecal/python-mergecal/commit/e9a0fc7b4784131344631cec7d5fa23d99d116cd))
+
 ## v0.3.1 (2024-09-10)
 
 ### Fix
