@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "mergecal"
-version = "0.3.2"
+version = "0.3.3"
 description = "A Python library to merge iCalendar feeds."
 authors = ["Abe Hanoka <abe@habet.dev>"]
 license = "GNU General Public License v3"
