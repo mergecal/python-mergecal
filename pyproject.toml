@@ -29,7 +29,7 @@ mergecal = "mergecal.cli:app"
 python = "^3.9"
 rich = ">=10"
 typer = {extras = ["all"], version = "^0.12.0"}
-icalendar = "^5.0.13"
+icalendar = "^6.0.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.0.0"
