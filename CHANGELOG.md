@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.3.4 (2024-10-06)
+
+### Fix
+
+- Update dependency icalendar to v6 ([`3524faf`](https://github.com/mergecal/python-mergecal/commit/3524faf4eaf94cb019e5b5bb9b804e19d4349df3))
+
 ## v0.3.3 (2024-10-04)
 
 ### Fix
