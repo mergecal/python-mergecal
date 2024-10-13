@@ -7,7 +7,7 @@
 project = "Python MergeCal"
 copyright = "2024, Abe Hanoka"
 author = "Abe Hanoka"
-release = "0.3.4"
+release = "0.3.5"
 
 # General configuration
 extensions = [
