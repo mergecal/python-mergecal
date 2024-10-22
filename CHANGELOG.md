@@ -1,26 +1,32 @@
 # Changelog
 
+## v0.3.6 (2024-10-22)
+
+### Bug fixes
+
+- Update dependency rich to v13.9.3 ([`38bd903`](https://github.com/mergecal/python-mergecal/commit/38bd9035b792d6d154e949b375ad0d852921ab24))
+
 ## v0.3.5 (2024-10-13)
 
-### Fixes
+### Bug fixes
 
 - Update dependency icalendar to v6.0.1 ([`619e542`](https://github.com/mergecal/python-mergecal/commit/619e542f91dfc260b85f19b07deb589df856e546))
 
 ## v0.3.4 (2024-10-06)
 
-### Fixes
+### Bug fixes
 
 - Update dependency icalendar to v6 ([`3524faf`](https://github.com/mergecal/python-mergecal/commit/3524faf4eaf94cb019e5b5bb9b804e19d4349df3))
 
 ## v0.3.3 (2024-10-04)
 
-### Fixes
+### Bug fixes
 
 - Update dependency rich to v13.9.2 ([`80bd3f5`](https://github.com/mergecal/python-mergecal/commit/80bd3f5fdefc7b696c90b946861c7b8a20d41c9f))
 
 ## v0.3.2 (2024-10-01)
 
-### Fixes
+### Bug fixes
 
 - Update dependency rich to v13.9.1 ([`a1515db`](https://github.com/mergecal/python-mergecal/commit/a1515dbc1139b0b85cae2bd51710674db5329165))
 
@@ -30,7 +36,7 @@
 
 ## v0.3.1 (2024-09-10)
 
-### Fixes
+### Bug fixes
 
 - Update dependency rich to v13.8.1 ([`44f9750`](https://github.com/mergecal/python-mergecal/commit/44f97502921dee5d62c3babcaf62c80788670479))
 
@@ -52,7 +58,7 @@
 - Use optional instead of | none ([`cd9af18`](https://github.com/mergecal/python-mergecal/commit/cd9af18d599596fa9d0beabfb5df577efcbe753d))
 - Typing updated to python 3.9 ([`4ca47cf`](https://github.com/mergecal/python-mergecal/commit/4ca47cf9af71f9c6d1ce8efbbdd74b829d1c0e6b))
 
-### Fixes
+### Bug fixes
 
 - Changelog creation ([`05b32df`](https://github.com/mergecal/python-mergecal/commit/05b32df73344fea188feb36eb4abe6981895ccd4))
 - Update dependency typer to ^0.12.0 ([`634b106`](https://github.com/mergecal/python-mergecal/commit/634b106fdbec9a3dd34cdd611825f5eb4cfe6053))
