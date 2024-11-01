@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.3.7 (2024-11-01)
+
+### Bug fixes
+
+- Update dependency rich to v13.9.4 ([`0b89e60`](https://github.com/mergecal/python-mergecal/commit/0b89e604fbc46159d5e23c7c7c2b0053a978b14d))
+
 ## v0.3.6 (2024-10-22)
 
 ### Bug fixes
