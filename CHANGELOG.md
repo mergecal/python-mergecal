@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.3.10 (2024-11-23)
+
+### Bug fixes
+
+- Update dependency icalendar to v6.1.0 (#80) ([`e32be59`](https://github.com/mergecal/python-mergecal/commit/e32be59a430366f9c77705ad0df2f13a6ec1d81e))
+
 ## v0.3.9 (2024-11-19)
 
 ### Bug fixes
