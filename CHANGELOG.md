@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.3.11 (2024-11-29)
+
+### Bug fixes
+
+- Update dependency typer to ^0.14.0 (#82) ([`b8173f8`](https://github.com/mergecal/python-mergecal/commit/b8173f8936274cd1091464ee3e3b004c3eada9ea))
+
 ## v0.3.10 (2024-11-23)
 
 ### Bug fixes
