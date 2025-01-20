@@ -22,18 +22,18 @@ def test_merge_calendars_with_recurring_events(merge):
 
     # Check that we have one recurring event and one event with RECURRENCE-ID
     assert sum(1 for e in events if "RRULE" in e) == 1, "Expected 1 recurring event"
-    assert (
-        sum(1 for e in events if "RECURRENCE-ID" in e) == 1
-    ), "Expected 1 event with RECURRENCE-ID"
+    assert sum(1 for e in events if "RECURRENCE-ID" in e) == 1, (
+        "Expected 1 event with RECURRENCE-ID"
+    )
 
     # Check that the event with RECURRENCE-ID has a different summary
     recurring_event = next(e for e in events if "RRULE" in e)
     modified_event = next(e for e in events if "RECURRENCE-ID" in e)
-    assert recurring_event.get("summary") != modified_event.get(
-        "summary"
-    ), "Modified event should have a different summary"
+    assert recurring_event.get("summary") != modified_event.get("summary"), (
+        "Modified event should have a different summary"
+    )
 
     # Check that the sequence number of the modified event is higher
-    assert modified_event.get("sequence", 0) > recurring_event.get(
-        "sequence", 0
-    ), "Modified event should have a higher sequence number"
+    assert modified_event.get("sequence", 0) > recurring_event.get("sequence", 0), (
+        "Modified event should have a higher sequence number"
+    )
