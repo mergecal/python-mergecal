@@ -3,10 +3,10 @@ name: Upgrader
 on:
   workflow_dispatch:
   schedule:
-    - cron: "52 8 23 * *"
+    - cron: "28 20 21 1-9,11-12 *"
 
 jobs:
   upgrade:
-    uses: browniebroke/github-actions/.github/workflows/poetry-upgrade.yml@v1
+    uses: browniebroke/github-actions/.github/workflows/uv-upgrade.yml@v1
     secrets:
       gh_pat: ${{ secrets.GH_PAT }}
