@@ -1,4 +1,5 @@
 from typing import Optional
+from zoneinfo import ZoneInfo
 
 from icalendar import Calendar
 
@@ -39,8 +40,18 @@ class CalendarMerger:
 
     def merge(self) -> Calendar:
         """Merge the calendars."""
+        exisitng_uids = set()
         for cal in self.calendars:
             for component in cal.walk("VEVENT"):
+                uid = component.get("uid", None)
+                sequence = component.get("sequence", 0)
+                recurrence_id = component.get("recurrence-id", None)
+                if recurrence_id:
+                    recurrence_id = recurrence_id.dt.astimezone(ZoneInfo("UTC"))
+                if (uid, sequence, recurrence_id) in exisitng_uids:
+                    continue
+                exisitng_uids.add((uid, sequence, recurrence_id))
+
                 self.merged_calendar.add_component(component)
 
         return self.merged_calendar
