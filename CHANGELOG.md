@@ -1,5 +1,7 @@
 # Changelog
 
+## v0.4.0 (2025-01-29)
+
 ## v0.3.14 (2025-01-19)
 
 ### Bug fixes
@@ -78,19 +80,15 @@
 
 - Update dependency rich to v13.9.1 ([`a1515db`](https://github.com/mergecal/python-mergecal/commit/a1515dbc1139b0b85cae2bd51710674db5329165))
 
-### Testing
+### Features
 
-- Add doctest to markdown and modules ([`e9a0fc7`](https://github.com/mergecal/python-mergecal/commit/e9a0fc7b4784131344631cec7d5fa23d99d116cd))
+- Skip vevent where uid, sequence and recurrence_id are the same ([`61f5d73`](https://github.com/mergecal/python-mergecal/commit/61f5d73d5be4fcee48777ec5de89db57d711e371))
 
 ## v0.3.1 (2024-09-10)
 
 ### Bug fixes
 
 - Update dependency rich to v13.8.1 ([`44f9750`](https://github.com/mergecal/python-mergecal/commit/44f97502921dee5d62c3babcaf62c80788670479))
-
-### Refactoring
-
-- Remove --calscale option ([`dfeaf8c`](https://github.com/mergecal/python-mergecal/commit/dfeaf8cd466a08859cb29669d189a7b19eeb663b))
 
 ## v0.3.0 (2024-09-09)
 
@@ -100,22 +98,10 @@
 
 ## v0.2.0 (2024-09-06)
 
-### Refactoring
-
-- Use optional instead of | none ([`424526e`](https://github.com/mergecal/python-mergecal/commit/424526ec471ca32a495b07f0fc6a5ab838a463c7))
-- Use optional instead of | none ([`cd9af18`](https://github.com/mergecal/python-mergecal/commit/cd9af18d599596fa9d0beabfb5df577efcbe753d))
-- Typing updated to python 3.9 ([`4ca47cf`](https://github.com/mergecal/python-mergecal/commit/4ca47cf9af71f9c6d1ce8efbbdd74b829d1c0e6b))
-
 ### Bug fixes
 
 - Changelog creation ([`05b32df`](https://github.com/mergecal/python-mergecal/commit/05b32df73344fea188feb36eb4abe6981895ccd4))
 - Update dependency typer to ^0.12.0 ([`634b106`](https://github.com/mergecal/python-mergecal/commit/634b106fdbec9a3dd34cdd611825f5eb4cfe6053))
-
-### Testing
-
-- Test merging two calendars ([`5c04d09`](https://github.com/mergecal/python-mergecal/commit/5c04d09b5799cc4b742fe298dcdda55e9ac372e1))
-- Fix tests ([`0051a2d`](https://github.com/mergecal/python-mergecal/commit/0051a2dc9824cf6ff9c1387d0a07aff4e5278a44))
-- Add test parametrization fixtures ([`fcd5c54`](https://github.com/mergecal/python-mergecal/commit/fcd5c54025969d858241ff96d172fab68a7f5199))
 
 ### Features
 
