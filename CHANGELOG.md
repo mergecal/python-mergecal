@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.4.1 (2025-01-31)
+
+### Bug fixes
+
+- Prevent skipping events without uids during merge ([`ca27fcb`](https://github.com/mergecal/python-mergecal/commit/ca27fcb6d23ba79a643e262adf292fe65d7be848))
+
 ## v0.4.0 (2025-01-29)
 
 ## v0.3.14 (2025-01-19)
