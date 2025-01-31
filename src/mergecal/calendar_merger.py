@@ -40,7 +40,7 @@ class CalendarMerger:
 
     def merge(self) -> Calendar:
         """Merge the calendars."""
-        exisitng_uids = set()
+        existing_uids = set()
         for cal in self.calendars:
             for component in cal.walk("VEVENT"):
                 uid = component.get("uid", None)
@@ -48,10 +48,14 @@ class CalendarMerger:
                 recurrence_id = component.get("recurrence-id", None)
                 if recurrence_id:
                     recurrence_id = recurrence_id.dt.astimezone(ZoneInfo("UTC"))
-                if (uid, sequence, recurrence_id) in exisitng_uids:
-                    continue
-                exisitng_uids.add((uid, sequence, recurrence_id))
 
+                # Create a unique identifier for the component
+                component_id = (uid, sequence, recurrence_id)
+
+                if uid is not None and component_id in existing_uids:
+                    continue
+
+                existing_uids.add(component_id)
                 self.merged_calendar.add_component(component)
 
         return self.merged_calendar
