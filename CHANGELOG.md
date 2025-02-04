@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.4.2 (2025-02-04)
+
+### Bug fixes
+
+- Remove unneccerasy conversion of recurrence ids to utc (#124) ([`78b0e2e`](https://github.com/mergecal/python-mergecal/commit/78b0e2ed9f5ae15108aa61d3651945f253abc066))
+
 ## v0.4.1 (2025-01-31)
 
 ### Bug fixes
