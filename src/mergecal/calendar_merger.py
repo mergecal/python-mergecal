@@ -1,6 +1,7 @@
 from typing import Optional
 
 from icalendar import Calendar, Event
+from x_wr_timezone import to_standard
 
 
 def generate_default_prodid() -> str:
@@ -28,11 +29,14 @@ class CalendarMerger:
         if method:
             self.merged_calendar.add("method", method)
 
-        self.calendars: list[Calendar] = calendars
+        self.calendars: list[Calendar] = []
+
+        for calendar in calendars:
+            self.add_calendar(calendar)
 
     def add_calendar(self, calendar: Calendar) -> None:
         """Add a calendar to be merged."""
-        self.calendars.append(calendar)
+        self.calendars.append(to_standard(calendar, add_timezone_component=True))
 
     def merge(self) -> Calendar:
         """Merge the calendars."""
