@@ -18,9 +18,6 @@ class CalendarMerger:
         version: str = "2.0",
         method: Optional[str] = None,
     ):
-        if not calendars:
-            raise ValueError("At least one calendar must be provided")
-
         self.merged_calendar = Calendar()
 
         # Set required properties

@@ -17,6 +17,9 @@ def merge_func(calendars: list[str]) -> icalendar.Calendar:
     """Use the main merge function to merge the calendars."""
     icalendars = []
     for calendar in calendars:
+        if isinstance(calendar, icalendar.Calendar):
+            icalendars.append(calendar)
+            continue
         if not calendar.endswith(".ics"):
             calendar += ".ics"
         calendar_path = CALENDARS_DIR / calendar
@@ -48,7 +51,7 @@ class ICSCalendars:
 
     def get_calendar(self, content):
         """Return the calendar given the content."""
-        return icalendar.Calendar(content)
+        return icalendar.Calendar.from_ical(content)
 
     def __getitem__(self, name):
         """Return the calendar from the calendars directory."""
