@@ -57,6 +57,11 @@ class ICSCalendars:
         """Return the calendar from the calendars directory."""
         return getattr(self, name)
 
+    @staticmethod
+    def keys() -> list[str]:
+        """The names of all calendars."""
+        return [calendar_path.stem for calendar_path in CALENDARS_DIR.iterdir()]
+
 
 for calendar_path in CALENDARS_DIR.iterdir():
     content = calendar_path.read_bytes()
@@ -73,6 +78,12 @@ for calendar_path in CALENDARS_DIR.iterdir():
 def calendars() -> ICSCalendars:
     """Fixture to easy access parsed calendars from the test/calendars directory."""
     return ICSCalendars()
+
+
+@pytest.fixture(params=ICSCalendars.keys())
+def a_calendar(request):
+    """Return a calendar."""
+    return request.param
 
 
 def doctest_print(obj):

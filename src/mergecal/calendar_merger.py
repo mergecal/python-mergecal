@@ -1,6 +1,6 @@
 from typing import Optional
 
-from icalendar import Calendar
+from icalendar import Calendar, Event
 
 
 def generate_default_prodid() -> str:
@@ -36,8 +36,14 @@ class CalendarMerger:
 
     def merge(self) -> Calendar:
         """Merge the calendars."""
-        existing_uids = set()
+        existing_uids: set[tuple[Optional[str], int, Optional[str]]] = set()
+        no_uid_events: list[Event] = []
+        tzids: set[str] = set()
         for cal in self.calendars:
+            for timezone in cal.timezones:
+                if timezone.tz_name not in tzids:
+                    self.merged_calendar.add_component(timezone)
+                    tzids.add(timezone.tz_name)
             for component in cal.events:
                 uid = component.get("uid", None)
                 sequence = component.get("sequence", 0)
@@ -46,7 +52,11 @@ class CalendarMerger:
                 # Create a unique identifier for the component
                 component_id = (uid, sequence, recurrence_id)
 
-                if uid is not None and component_id in existing_uids:
+                if uid is None:
+                    if component in no_uid_events:
+                        continue
+                    no_uid_events.append(component)
+                elif component_id in existing_uids:
                     continue
 
                 existing_uids.add(component_id)

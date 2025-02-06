@@ -47,4 +47,4 @@ def test_documentation_file(document, env_for_doctest):
         globs=env_for_doctest,
         raise_on_error=False,
     )
-    assert test_result.failed == 0, f"{test_result.failed} errors in {document.name}"
+    assert test_result.failed == 0, f"{test_result.failed} errors in {document}"
