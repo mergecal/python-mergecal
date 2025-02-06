@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.5.0 (2025-02-06)
+
+### Features
+
+- Add timezone support to output ([`bad44d6`](https://github.com/mergecal/python-mergecal/commit/bad44d698cc58d6c2dc247ae9de8dd53fa10a6e4))
+
 ## v0.4.2 (2025-02-04)
 
 ### Bug fixes
