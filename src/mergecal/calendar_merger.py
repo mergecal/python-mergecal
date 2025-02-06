@@ -48,23 +48,23 @@ class CalendarMerger:
                 if timezone.tz_name not in tzids:
                     self.merged_calendar.add_component(timezone)
                     tzids.add(timezone.tz_name)
-            for component in cal.events:
-                uid = component.get("uid", None)
-                sequence = component.get("sequence", 0)
-                recurrence_id = component.get("recurrence-id", None)
+            for event in cal.events:
+                uid = event.get("uid", None)
+                sequence = event.get("sequence", 0)
+                recurrence_id = event.get("recurrence-id", None)
 
                 # Create a unique identifier for the component
                 component_id = (uid, sequence, recurrence_id)
 
                 if uid is None:
-                    if component in no_uid_events:
+                    if event in no_uid_events:
                         continue
-                    no_uid_events.append(component)
+                    no_uid_events.append(event)
                 elif component_id in existing_uids:
                     continue
 
                 existing_uids.add(component_id)
-                self.merged_calendar.add_component(component)
+                self.merged_calendar.add_component(event)
 
         return self.merged_calendar
 
