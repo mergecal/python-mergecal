@@ -1,6 +1,7 @@
 from typing import Optional
 
-from icalendar import Calendar
+from icalendar import Calendar, Event
+from x_wr_timezone import to_standard
 
 
 def generate_default_prodid() -> str:
@@ -18,9 +19,6 @@ class CalendarMerger:
         version: str = "2.0",
         method: Optional[str] = None,
     ):
-        if not calendars:
-            raise ValueError("At least one calendar must be provided")
-
         self.merged_calendar = Calendar()
 
         # Set required properties
@@ -31,29 +29,42 @@ class CalendarMerger:
         if method:
             self.merged_calendar.add("method", method)
 
-        self.calendars: list[Calendar] = calendars
+        self.calendars: list[Calendar] = []
+
+        for calendar in calendars:
+            self.add_calendar(calendar)
 
     def add_calendar(self, calendar: Calendar) -> None:
         """Add a calendar to be merged."""
-        self.calendars.append(calendar)
+        self.calendars.append(to_standard(calendar, add_timezone_component=True))
 
     def merge(self) -> Calendar:
         """Merge the calendars."""
-        existing_uids = set()
+        existing_uids: set[tuple[Optional[str], int, Optional[str]]] = set()
+        no_uid_events: list[Event] = []
+        tzids: set[str] = set()
         for cal in self.calendars:
-            for component in cal.events:
-                uid = component.get("uid", None)
-                sequence = component.get("sequence", 0)
-                recurrence_id = component.get("recurrence-id", None)
+            for timezone in cal.timezones:
+                if timezone.tz_name not in tzids:
+                    self.merged_calendar.add_component(timezone)
+                    tzids.add(timezone.tz_name)
+            for event in cal.events:
+                uid = event.get("uid", None)
+                sequence = event.get("sequence", 0)
+                recurrence_id = event.get("recurrence-id", None)
 
                 # Create a unique identifier for the component
                 component_id = (uid, sequence, recurrence_id)
 
-                if uid is not None and component_id in existing_uids:
+                if uid is None:
+                    if event in no_uid_events:
+                        continue
+                    no_uid_events.append(event)
+                elif component_id in existing_uids:
                     continue
 
                 existing_uids.add(component_id)
-                self.merged_calendar.add_component(component)
+                self.merged_calendar.add_component(event)
 
         return self.merged_calendar
 

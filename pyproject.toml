@@ -29,6 +29,7 @@ dependencies = [
   "icalendar>=6.1.1",
   "rich>=10",
   "typer>=0.15,<1",
+  "x-wr-timezone>=2.0.1"
 ]
 urls."Bug Tracker" = "https://github.com/abe-101/mergecal/issues"
 urls.Changelog = "https://github.com/abe-101/mergecal/blob/main/CHANGELOG.md"

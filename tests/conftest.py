@@ -17,6 +17,9 @@ def merge_func(calendars: list[str]) -> icalendar.Calendar:
     """Use the main merge function to merge the calendars."""
     icalendars = []
     for calendar in calendars:
+        if isinstance(calendar, icalendar.Calendar):
+            icalendars.append(calendar)
+            continue
         if not calendar.endswith(".ics"):
             calendar += ".ics"
         calendar_path = CALENDARS_DIR / calendar
@@ -48,11 +51,16 @@ class ICSCalendars:
 
     def get_calendar(self, content):
         """Return the calendar given the content."""
-        return icalendar.Calendar(content)
+        return icalendar.Calendar.from_ical(content)
 
     def __getitem__(self, name):
         """Return the calendar from the calendars directory."""
         return getattr(self, name)
+
+    @staticmethod
+    def keys() -> list[str]:
+        """The names of all calendars."""
+        return [calendar_path.stem for calendar_path in CALENDARS_DIR.iterdir()]
 
 
 for calendar_path in CALENDARS_DIR.iterdir():
@@ -70,6 +78,12 @@ for calendar_path in CALENDARS_DIR.iterdir():
 def calendars() -> ICSCalendars:
     """Fixture to easy access parsed calendars from the test/calendars directory."""
     return ICSCalendars()
+
+
+@pytest.fixture(params=ICSCalendars.keys())
+def a_calendar(request):
+    """Return a calendar."""
+    return request.param
 
 
 def doctest_print(obj):

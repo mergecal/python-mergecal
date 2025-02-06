@@ -37,3 +37,17 @@ def test_merge_calendars_with_recurring_events(merge):
     assert modified_event.get("sequence", 0) > recurring_event.get("sequence", 0), (
         "Modified event should have a higher sequence number"
     )
+
+
+def test_merging_a_calendar_with_itself_returns_the_same_calendar(merge, a_calendar):
+    """The calendar should not be duplicated."""
+    cal_1 = merge([a_calendar])
+    cal_2 = merge([a_calendar, a_calendar])
+    assert cal_1 == cal_2
+
+
+def test_merging_is_reproducible(merge, a_calendar):
+    """We expect the same result when merging a calendar."""
+    cal_1 = merge([a_calendar])
+    cal_2 = merge([a_calendar])
+    assert cal_1 == cal_2
