@@ -40,6 +40,13 @@
 
 A Python library to merge iCalendar feeds.
 
+Merging two calendars might look easy but it is not! Here is a list of features:
+
+- ✅ Google Calendar Compatibility (X-WR-TIMEZONE)
+- ✅ Add Timezones in the right place
+- ✅ handle duplicated events
+- ✅ handle modifications (deletion, addition) of events
+
 ## Installation
 
 Install this via pip (or your favorite package manager):
