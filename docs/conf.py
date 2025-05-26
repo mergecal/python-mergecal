@@ -15,7 +15,7 @@ from sphinx.ext import apidoc
 project = "Python MergeCal"
 copyright = "2025, Abe Hanoka"
 author = "Abe Hanoka"
-release = "0.5.0"
+release = "1.0.0-rc.1"
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
