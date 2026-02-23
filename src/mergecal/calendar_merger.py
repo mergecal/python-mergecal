@@ -4,6 +4,11 @@ from icalendar import Calendar, Event
 from x_wr_timezone import to_standard
 
 
+def calendars_from_ical(data: bytes) -> list[Calendar]:
+    """Parse ICS data, returning one Calendar per VCALENDAR component found."""
+    return Calendar.from_ical(data, multiple=True)
+
+
 def generate_default_prodid() -> str:
     """Generate a default PRODID."""
     return "-//mergecal.org//MergeCal//EN"
@@ -75,4 +80,4 @@ def merge_calendars(calendars: list[Calendar], **kwargs: object) -> Calendar:
     return merger.merge()
 
 
-__all__ = ["CalendarMerger", "merge_calendars"]
+__all__ = ["CalendarMerger", "calendars_from_ical", "merge_calendars"]
