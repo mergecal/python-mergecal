@@ -25,7 +25,7 @@ classifiers = [
 ]
 
 dependencies = [
-  "icalendar>=7.0.0",
+  "icalendar>=7.0.2",
   "rich>=10",
   "typer>=0.15,<1",
   "x-wr-timezone>=2.0.1"

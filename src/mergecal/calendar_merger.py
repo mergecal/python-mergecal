@@ -94,7 +94,7 @@ class CalendarMerger:
                 events.add(event, calendar_color)
             for todo in cal.todos:
                 todos.add(todo, calendar_color)
-            for journal in cal.walk("VJOURNAL"):  # icalendar has no .journals property
+            for journal in cal.journals:
                 journals.add(journal, calendar_color)
 
         return self.merged_calendar
