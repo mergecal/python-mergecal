@@ -22,6 +22,7 @@ class CalendarMerger:
         calendars: list[Calendar],
         prodid: Optional[str] = None,
         version: str = "2.0",
+        calscale: str = "GREGORIAN",
         method: Optional[str] = None,
     ):
         self.merged_calendar = Calendar()
@@ -29,6 +30,7 @@ class CalendarMerger:
         # Set required properties
         self.merged_calendar.add("prodid", prodid or generate_default_prodid())
         self.merged_calendar.add("version", version)
+        self.merged_calendar.add("calscale", calscale)
 
         # Set optional properties if provided
         if method:
