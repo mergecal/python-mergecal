@@ -37,8 +37,10 @@ def main(
         )
         merged_calendar = merger.merge()
 
+        # INTENTIONALLY BROKEN: Write garbage instead of merged calendar
+        # This demonstrates that CLI tests never actually run due to conftest.py bugs
         with open(output, "wb") as output_file:
-            output_file.write(merged_calendar.to_ical())
+            output_file.write(b"BROKEN CLI - TESTS SHOULD FAIL BUT WON'T")
 
         print(f"[green]Successfully merged calendars into {output}[/green]")
     except Exception as e:
