@@ -1,7 +1,9 @@
-from typing import Optional
+from dataclasses import dataclass, field
 
-from icalendar import Calendar, Event
+from icalendar import Calendar, Component
 from x_wr_timezone import to_standard
+
+ComponentId = tuple[str, int, str | None]
 
 
 def calendars_from_ical(data: bytes) -> list[Calendar]:
@@ -14,25 +16,49 @@ def generate_default_prodid() -> str:
     return "-//mergecal.org//MergeCal//EN"
 
 
+@dataclass
+class _ComponentTracker:
+    target: Calendar
+    seen: set[ComponentId] = field(default_factory=set)
+    no_uid: list[Component] = field(default_factory=list)
+
+    def add(self, component: Component, calendar_color: str | None) -> None:
+        uid = component.uid
+        component_id: ComponentId = (
+            uid,
+            component.sequence,
+            component.get("recurrence-id", None),
+        )
+        if not uid:
+            if component in self.no_uid:
+                return
+            self.no_uid.append(component)
+        else:
+            if component_id in self.seen:
+                return
+            self.seen.add(component_id)
+        if calendar_color and not component.color:
+            component.color = calendar_color
+        self.target.add_component(component)
+
+
 class CalendarMerger:
     """Merge multiple calendars into one."""
 
     def __init__(
         self,
         calendars: list[Calendar],
-        prodid: Optional[str] = None,
+        prodid: str | None = None,
         version: str = "2.0",
         calscale: str = "GREGORIAN",
-        method: Optional[str] = None,
+        method: str | None = None,
     ):
         self.merged_calendar = Calendar()
 
-        # Set required properties
         self.merged_calendar.add("prodid", prodid or generate_default_prodid())
         self.merged_calendar.add("version", version)
         self.merged_calendar.add("calscale", calscale)
 
-        # Set optional properties if provided
         if method:
             self.merged_calendar.add("method", method)
 
@@ -47,31 +73,23 @@ class CalendarMerger:
 
     def merge(self) -> Calendar:
         """Merge the calendars."""
-        existing_uids: set[tuple[Optional[str], int, Optional[str]]] = set()
-        no_uid_events: list[Event] = []
+        tracker = _ComponentTracker(self.merged_calendar)
         tzids: set[str] = set()
+
         for cal in self.calendars:
+            # .color resolves COLOR then X-APPLE-CALENDAR-COLOR (RFC 7986 §5.9)
+            calendar_color = cal.color
+
+            if calendar_color and not self.merged_calendar.color:
+                self.merged_calendar.color = calendar_color
+
             for timezone in cal.timezones:
                 if timezone.tz_name not in tzids:
                     self.merged_calendar.add_component(timezone)
                     tzids.add(timezone.tz_name)
-            for event in cal.events:
-                uid = event.get("uid", None)
-                sequence = event.get("sequence", 0)
-                recurrence_id = event.get("recurrence-id", None)
 
-                # Create a unique identifier for the component
-                component_id = (uid, sequence, recurrence_id)
-
-                if uid is None:
-                    if event in no_uid_events:
-                        continue
-                    no_uid_events.append(event)
-                elif component_id in existing_uids:
-                    continue
-
-                existing_uids.add(component_id)
-                self.merged_calendar.add_component(event)
+            for component in cal.events + cal.todos + cal.journals:
+                tracker.add(component, calendar_color)
 
         return self.merged_calendar
 

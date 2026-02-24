@@ -18,6 +18,6 @@ def test_merge_calendars_with_date_recurrence_id(merge: Any) -> None:
     for event in recurrence_events:
         recurrence_id = event["RECURRENCE-ID"].dt
         # Should be either a date or datetime
-        assert isinstance(recurrence_id, (date, datetime)), (
+        assert isinstance(recurrence_id, date | datetime), (
             "Recurrence ID should be a date or datetime object"
         )
