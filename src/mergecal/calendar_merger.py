@@ -73,9 +73,7 @@ class CalendarMerger:
 
     def merge(self) -> Calendar:
         """Merge the calendars."""
-        events = _ComponentTracker(self.merged_calendar)
-        todos = _ComponentTracker(self.merged_calendar)
-        journals = _ComponentTracker(self.merged_calendar)
+        tracker = _ComponentTracker(self.merged_calendar)
         tzids: set[str] = set()
 
         for cal in self.calendars:
@@ -90,12 +88,8 @@ class CalendarMerger:
                     self.merged_calendar.add_component(timezone)
                     tzids.add(timezone.tz_name)
 
-            for event in cal.events:
-                events.add(event, calendar_color)
-            for todo in cal.todos:
-                todos.add(todo, calendar_color)
-            for journal in cal.journals:
-                journals.add(journal, calendar_color)
+            for component in cal.events + cal.todos + cal.journals:
+                tracker.add(component, calendar_color)
 
         return self.merged_calendar
 
