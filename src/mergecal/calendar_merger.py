@@ -3,7 +3,7 @@ from dataclasses import dataclass, field
 from icalendar import Calendar, Component
 from x_wr_timezone import to_standard
 
-ComponentId = tuple[str | None, int, str | None]
+ComponentId = tuple[str, int, str | None]
 
 
 def calendars_from_ical(data: bytes) -> list[Calendar]:
@@ -18,16 +18,15 @@ def generate_default_prodid() -> str:
 
 @dataclass
 class _ComponentTracker:
+    target: Calendar
     seen: set[ComponentId] = field(default_factory=set)
     no_uid: list[Component] = field(default_factory=list)
 
-    def add(
-        self, component: Component, cal_color: str | None, target: Calendar
-    ) -> None:
+    def add(self, component: Component, calendar_color: str | None) -> None:
         uid = component.uid
         component_id: ComponentId = (
             uid,
-            component.get("sequence", 0),
+            component.sequence,
             component.get("recurrence-id", None),
         )
         if not uid:
@@ -38,9 +37,9 @@ class _ComponentTracker:
             if component_id in self.seen:
                 return
             self.seen.add(component_id)
-        if cal_color and not component.color:
-            component.color = cal_color
-        target.add_component(component)
+        if calendar_color and not component.color:
+            component.color = calendar_color
+        self.target.add_component(component)
 
 
 class CalendarMerger:
@@ -74,17 +73,17 @@ class CalendarMerger:
 
     def merge(self) -> Calendar:
         """Merge the calendars."""
-        events = _ComponentTracker()
-        todos = _ComponentTracker()
-        journals = _ComponentTracker()
+        events = _ComponentTracker(self.merged_calendar)
+        todos = _ComponentTracker(self.merged_calendar)
+        journals = _ComponentTracker(self.merged_calendar)
         tzids: set[str] = set()
 
         for cal in self.calendars:
             # .color resolves COLOR then X-APPLE-CALENDAR-COLOR (RFC 7986 §5.9)
-            cal_color = cal.color
+            calendar_color = cal.color
 
-            if cal_color and not self.merged_calendar.color:
-                self.merged_calendar.color = cal_color
+            if calendar_color and not self.merged_calendar.color:
+                self.merged_calendar.color = calendar_color
 
             for timezone in cal.timezones:
                 if timezone.tz_name not in tzids:
@@ -92,11 +91,11 @@ class CalendarMerger:
                     tzids.add(timezone.tz_name)
 
             for event in cal.events:
-                events.add(event, cal_color, self.merged_calendar)
+                events.add(event, calendar_color)
             for todo in cal.todos:
-                todos.add(todo, cal_color, self.merged_calendar)
+                todos.add(todo, calendar_color)
             for journal in cal.walk("VJOURNAL"):  # icalendar has no .journals property
-                journals.add(journal, cal_color, self.merged_calendar)
+                journals.add(journal, calendar_color)
 
         return self.merged_calendar
 

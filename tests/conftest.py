@@ -96,6 +96,12 @@ def doctest_print(obj):
     print(str(obj).strip().replace("\r\n", "\n").replace("\r", "\n"))
 
 
+@pytest.fixture(params=["VEVENT", "VTODO", "VJOURNAL"])
+def component_type(request) -> str:
+    """Parametrized fixture for all component types that support COLOR."""
+    return request.param
+
+
 @pytest.fixture()
 def env_for_doctest(monkeypatch):
     """Modify the environment to make doctests run."""
