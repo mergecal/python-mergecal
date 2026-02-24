@@ -6,7 +6,7 @@ import icalendar
 import pytest
 from typer.testing import CliRunner
 
-from mergecal import merge_calendars
+from mergecal import calendars_from_ical, merge_calendars
 from mergecal.cli import app
 
 HERE = Path(__file__).parent
@@ -23,7 +23,7 @@ def merge_func(calendars: list[str]) -> icalendar.Calendar:
         if not calendar.endswith(".ics"):
             calendar += ".ics"
         calendar_path = CALENDARS_DIR / calendar
-        icalendars.append(icalendar.Calendar.from_ical(calendar_path.read_bytes()))
+        icalendars.append(ICSCalendars().get_calendar(calendar_path.read_bytes()))
     return merge_calendars(icalendars)
 
 
@@ -51,7 +51,10 @@ class ICSCalendars:
 
     def get_calendar(self, content):
         """Return the calendar given the content."""
-        return icalendar.Calendar.from_ical(content)
+        cals = calendars_from_ical(content)
+        cal = cals[0]
+        cal.stream = cals
+        return cal
 
     def __getitem__(self, name):
         """Return the calendar from the calendars directory."""

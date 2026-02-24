@@ -2,10 +2,9 @@ from pathlib import Path
 from typing import Optional
 
 import typer
-from icalendar import Calendar
 from rich import print
 
-from .calendar_merger import CalendarMerger
+from .calendar_merger import CalendarMerger, calendars_from_ical
 
 app = typer.Typer()
 
@@ -30,7 +29,7 @@ def main(
         calendar_objects = []
         for calendar_path in calendars:
             with open(calendar_path, "rb") as cal_file:
-                calendar_objects.append(Calendar.from_ical(cal_file.read()))
+                calendar_objects.extend(calendars_from_ical(cal_file.read()))
 
         merger = CalendarMerger(
             calendars=calendar_objects, prodid=prodid, method=method
