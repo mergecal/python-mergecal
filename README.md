@@ -75,7 +75,7 @@ You can use MergeCal in your Python code as follows:
 
 # Write the merged calendar to a file
 >>> (CALENDARS / "merged_calendar.ics").write_bytes(merged_calendar.to_ical())
-933
+953
 
 # The merged calendar will contain all the events of both calendars
 >>> [str(event["SUMMARY"]) for event in calendar1.walk("VEVENT")]
