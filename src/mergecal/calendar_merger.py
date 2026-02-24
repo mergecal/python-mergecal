@@ -21,7 +21,9 @@ class _ComponentTracker:
     seen: set[ComponentId] = field(default_factory=set)
     no_uid: list[Component] = field(default_factory=list)
 
-    def add(self, component: Component, cal_color: str, target: Calendar) -> None:
+    def add(
+        self, component: Component, cal_color: str | None, target: Calendar
+    ) -> None:
         uid = component.get("uid", None)
         component_id: ComponentId = (
             uid,

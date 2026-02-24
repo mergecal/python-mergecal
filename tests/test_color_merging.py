@@ -38,3 +38,10 @@ def test_merged_calendar_color_when_only_one_has_color(calendars):
     cals = calendars.color_none.stream + calendars.color_rfc7986.stream
     result = merge_calendars(cals)
     assert result.color == "turquoise"
+
+
+@pytest.mark.parametrize("component_type", ["VEVENT", "VTODO", "VJOURNAL"])
+def test_component_own_color_preserved_across_calendars(calendars, component_type):
+    cals = calendars.color_event_own.stream + calendars.color_rfc7986.stream
+    result = merge_calendars(cals)
+    assert result.walk(component_type)[0].color == "navy"
