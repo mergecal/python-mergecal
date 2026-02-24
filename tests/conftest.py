@@ -97,7 +97,7 @@ def doctest_print(obj):
 
 
 @pytest.fixture(params=["VEVENT", "VTODO", "VJOURNAL"])
-def component_type(request) -> str:
+def component_type(request: pytest.FixtureRequest) -> str:
     """Parametrized fixture for all component types that support COLOR."""
     return request.param
 
