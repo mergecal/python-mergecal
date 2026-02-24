@@ -24,13 +24,13 @@ class _ComponentTracker:
     def add(
         self, component: Component, cal_color: str | None, target: Calendar
     ) -> None:
-        uid = component.get("uid", None)
+        uid = component.uid
         component_id: ComponentId = (
             uid,
             component.get("sequence", 0),
             component.get("recurrence-id", None),
         )
-        if uid is None:
+        if not uid:
             if component in self.no_uid:
                 return
             self.no_uid.append(component)
