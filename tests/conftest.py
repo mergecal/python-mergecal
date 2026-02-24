@@ -23,7 +23,7 @@ def merge_func(calendars: list[str]) -> icalendar.Calendar:
         if not calendar.endswith(".ics"):
             calendar += ".ics"
         calendar_path = CALENDARS_DIR / calendar
-        icalendars.extend(calendars_from_ical(calendar_path.read_bytes()))
+        icalendars.append(ICSCalendars().get_calendar(calendar_path.read_bytes()))
     return merge_calendars(icalendars)
 
 
@@ -52,7 +52,9 @@ class ICSCalendars:
     def get_calendar(self, content):
         """Return the calendar given the content."""
         cals = calendars_from_ical(content)
-        return cals[0] if len(cals) == 1 else merge_calendars(cals)
+        cal = cals[0]
+        cal.stream = cals
+        return cal
 
     def __getitem__(self, name):
         """Return the calendar from the calendars directory."""

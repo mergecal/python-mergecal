@@ -1,30 +1,44 @@
 """Tests for ICS files containing multiple VCALENDAR components."""
 
-from pathlib import Path
+from typing import TYPE_CHECKING
 
-from mergecal import calendars_from_ical, merge_calendars
+import pytest
 
-CALENDARS_DIR = Path(__file__).parent / "calendars"
-TWO_VCALENDARS_DATA = (CALENDARS_DIR / "two_vcalendars.ics").read_bytes()
+from mergecal import merge_calendars
+
+if TYPE_CHECKING:
+    from icalendar import Calendar
+
+    from .conftest import ICSCalendars
 
 
-def test_calendars_from_ical_returns_two_calendars() -> None:
+@pytest.fixture
+def two_vcalendars_cals(calendars: "ICSCalendars") -> list["Calendar"]:
+    """Fixture providing parsed calendars from two_vcalendars.ics file."""
+    return calendars.two_vcalendars.stream  # type: ignore[attr-defined]
+
+
+def test_calendars_from_ical_returns_two_calendars(
+    two_vcalendars_cals: list["Calendar"],
+) -> None:
     """Parse an ICS file with two VCALENDAR blocks and get two Calendar objects."""
-    cals = calendars_from_ical(TWO_VCALENDARS_DATA)
-    assert len(cals) == 2
+    assert len(two_vcalendars_cals) == 2
 
 
-def test_merge_file_with_two_vcalendars_yields_both_events() -> None:
+def test_merge_file_with_two_vcalendars_yields_both_events(
+    two_vcalendars_cals: list["Calendar"],
+) -> None:
     """Merging calendars from a multi-VCALENDAR file produces all events."""
-    cals = calendars_from_ical(TWO_VCALENDARS_DATA)
-    merged = merge_calendars(cals)
+    merged = merge_calendars(two_vcalendars_cals)
     summaries = {str(e.get("summary")) for e in merged.walk("VEVENT")}
     assert summaries == {"Event A", "Event B"}
 
 
-def test_merging_multi_vcalendar_file_with_itself_deduplicates() -> None:
+def test_merging_multi_vcalendar_file_with_itself_deduplicates(
+    two_vcalendars_cals: list["Calendar"],
+) -> None:
     """Merging a multi-VCALENDAR file with itself produces no duplicate events."""
-    cals = calendars_from_ical(TWO_VCALENDARS_DATA)
+    cals = two_vcalendars_cals
     merged_once = merge_calendars(cals)
     merged_twice = merge_calendars(cals + cals)
     assert merged_once == merged_twice
