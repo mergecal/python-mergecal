@@ -63,6 +63,7 @@ class CalendarMerger:
             self.merged_calendar.add("method", method)
 
         self.calendars: list[Calendar] = []
+        self._merged = False
 
         for calendar in calendars:
             self.add_calendar(calendar)
@@ -73,6 +74,12 @@ class CalendarMerger:
 
     def merge(self) -> Calendar:
         """Merge the calendars."""
+        if self._merged:
+            raise RuntimeError(
+                "merge() can only be called once; "
+                "create a new CalendarMerger instance to merge again"
+            )
+        self._merged = True
         tracker = _ComponentTracker(self.merged_calendar)
         tzids: set[str] = set()
 
