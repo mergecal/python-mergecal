@@ -7,11 +7,7 @@ from x_wr_timezone import to_standard
 
 ComponentId = tuple[str, int, str | None]
 
-# Avoids expensive re-generation of VTIMEZONE components across CalendarMerger
-# instances.
-_timezone_cache: dict[str, Timezone] = {}
-
-DEFAULT_COMPONENTS = ["VEVENT", "VTIMEZONE"]
+DEFAULT_COMPONENTS = ["VEVENT", "VTODO", "VJOURNAL", "VTIMEZONE"]
 
 
 def calendars_from_ical(data: bytes) -> list[Calendar]:
@@ -63,6 +59,22 @@ class CalendarMerger:
         generate_vtimezone: bool = True,
         components: list[str] | None = None,
     ):
+        """
+        Initialize the merger.
+
+        Args:
+            calendars: Calendars to merge.
+            prodid: PRODID for the merged calendar. Defaults to the mergecal PRODID.
+            version: iCalendar version. Defaults to "2.0".
+            calscale: Calendar scale. Defaults to "GREGORIAN".
+            method: Calendar method (e.g. "PUBLISH").
+            generate_vtimezone: Generate missing VTIMEZONE components for any
+                referenced timezone IDs. Disable for performance when timezone
+                accuracy is not needed.
+            components: Component types to include in the merge. Defaults to all
+                types: VEVENT, VTODO, VJOURNAL, VTIMEZONE. Pass a subset to filter.
+
+        """
         self.merged_calendar = Calendar()
 
         self.merged_calendar.add("prodid", prodid or generate_default_prodid())
@@ -75,6 +87,7 @@ class CalendarMerger:
         self.calendars: list[Calendar] = []
         self._merged = False
         self.generate_vtimezone = generate_vtimezone
+        self._timezone_cache: dict[str, Timezone] = {}
         self.components = (
             [c.strip().upper() for c in components if c.strip()]
             if components is not None
@@ -91,11 +104,11 @@ class CalendarMerger:
         if "VTODO" in self.components:
             result.extend(cal.todos)
         if "VJOURNAL" in self.components:
-            result.extend(cal.walk("VJOURNAL"))
+            result.extend(cal.journals)
         return result
 
     def _should_generate_timezones(self) -> bool:
-        return "VTIMEZONE" in self.components and self.generate_vtimezone
+        return self.generate_vtimezone
 
     def add_calendar(self, calendar: Calendar) -> None:
         """Add a calendar to be merged."""
@@ -105,15 +118,13 @@ class CalendarMerger:
 
         if self._should_generate_timezones():
             for tz in cal.timezones:
-                if tz.tz_name not in _timezone_cache:
-                    _timezone_cache[tz.tz_name] = tz
+                if tz.tz_name not in self._timezone_cache:
+                    self._timezone_cache[tz.tz_name] = tz
 
-            # to_standard() may add a VTIMEZONE even when one already exists for
-            # the same TZID, causing get_missing_tzids() to raise KeyError
-            # (collective/icalendar#1124). Deduplicate before calling
-            # add_missing_timezones(). Also drop VTIMEZONEs not referenced by
-            # any component — get_missing_tzids() assumes every VTIMEZONE is
-            # used, so an unreferenced one causes a KeyError too.
+            # to_standard() may add a duplicate VTIMEZONE for the same TZID when
+            # the calendar already has one; deduplicate before calling
+            # add_missing_timezones(). Also drop VTIMEZONEs not referenced by any
+            # component — get_missing_tzids() assumes every VTIMEZONE is used.
             used_tzids = cal.get_used_tzids()
             seen_tzids: set[str] = set()
             deduped: list[Component] = []
@@ -125,19 +136,18 @@ class CalendarMerger:
                 deduped.append(c)
             cal.subcomponents[:] = deduped
 
-            if cal.get_used_tzids():
-                missing_tzids = cal.get_missing_tzids()
-
+            missing_tzids = cal.get_missing_tzids()
+            if missing_tzids:
                 for tzid in missing_tzids:
-                    if tzid in _timezone_cache:
-                        cal.add_component(_timezone_cache[tzid])
+                    if tzid in self._timezone_cache:
+                        cal.add_component(self._timezone_cache[tzid])
 
                 remaining = cal.get_missing_tzids()
                 if remaining:
                     cal.add_missing_timezones()
                     for tz in cal.timezones:
                         if tz.tz_name in remaining:
-                            _timezone_cache[tz.tz_name] = tz
+                            self._timezone_cache[tz.tz_name] = tz
 
         self.calendars.append(cal)
 
@@ -159,16 +169,13 @@ class CalendarMerger:
             if calendar_color and not self.merged_calendar.color:
                 self.merged_calendar.color = calendar_color
 
-            if "VTIMEZONE" in self.components:
-                for timezone in cal.timezones:
-                    if timezone.tz_name == "UTC":
-                        # UTC needs no VTIMEZONE per RFC 5545 §3.6.5; skip spurious
-                        # entries generated by add_missing_timezones()
-                        # (collective/icalendar#1124)
-                        continue
-                    if timezone.tz_name not in tzids:
-                        self.merged_calendar.add_component(timezone)
-                        tzids.add(timezone.tz_name)
+            for timezone in cal.timezones:
+                if timezone.tz_name == "UTC":
+                    # UTC needs no VTIMEZONE per RFC 5545 §3.6.5
+                    continue
+                if timezone.tz_name not in tzids:
+                    self.merged_calendar.add_component(timezone)
+                    tzids.add(timezone.tz_name)
 
             for component in self._get_components(cal):
                 tracker.add(component, calendar_color)

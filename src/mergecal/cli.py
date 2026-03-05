@@ -16,7 +16,10 @@ method_opt = typer.Option(None, "--method", help="Calendar method")
 no_generate_vtimezone_opt = typer.Option(
     False,
     "--no-generate-vtimezone",
-    help="Disable VTIMEZONE generation for performance",
+    help=(
+        "Do not generate missing VTIMEZONE components although they might be"
+        " required. This increases performance."
+    ),
 )
 components_opt = typer.Option(
     None,
