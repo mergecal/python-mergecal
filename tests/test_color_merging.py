@@ -4,7 +4,10 @@ from mergecal import merge_calendars
 
 
 def test_component_inherits_calendar_color(calendars, component_type):
-    result = merge_calendars(calendars.color_rfc7986.stream)
+    result = merge_calendars(
+        calendars.color_rfc7986.stream,
+        components=["VEVENT", "VTODO", "VJOURNAL"],
+    )
     assert result.walk(component_type)[0].color == "turquoise"
 
 
@@ -14,7 +17,10 @@ def test_event_inherits_apple_calendar_color(calendars):
 
 
 def test_component_own_color_not_overwritten(calendars, component_type):
-    result = merge_calendars(calendars.color_event_own.stream)
+    result = merge_calendars(
+        calendars.color_event_own.stream,
+        components=["VEVENT", "VTODO", "VJOURNAL"],
+    )
     assert result.walk(component_type)[0].color == "navy"
 
 
@@ -38,7 +44,7 @@ def test_merged_calendar_color_when_only_one_has_color(calendars):
 
 def test_component_own_color_preserved_across_calendars(calendars, component_type):
     cals = calendars.color_event_own.stream + calendars.color_rfc7986.stream
-    result = merge_calendars(cals)
+    result = merge_calendars(cals, components=["VEVENT", "VTODO", "VJOURNAL"])
     assert result.walk(component_type)[0].color == "navy"
 
 
