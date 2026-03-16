@@ -13,12 +13,12 @@ output_opt = typer.Option(
 )
 prodid_opt = typer.Option(None, "--prodid", help="Product ID for the merged calendar")
 method_opt = typer.Option(None, "--method", help="Calendar method")
-no_generate_vtimezone_opt = typer.Option(
-    False,
-    "--no-generate-vtimezone",
+generate_vtimezone_opt = typer.Option(
+    True,
+    "--generate-vtimezone/--no-generate-vtimezone",
     help=(
-        "Do not generate missing VTIMEZONE components although they might be"
-        " required. This increases performance."
+        "Generate missing VTIMEZONE components. Disable for performance when"
+        " timezone accuracy is not needed."
     ),
 )
 components_opt = typer.Option(
@@ -34,7 +34,7 @@ def main(
     output: Path = output_opt,
     prodid: str | None = prodid_opt,
     method: str | None = method_opt,
-    no_generate_vtimezone: bool = no_generate_vtimezone_opt,
+    generate_vtimezone: bool = generate_vtimezone_opt,
     components: str | None = components_opt,
 ) -> None:
     """Merge multiple iCalendar files into one."""
@@ -48,7 +48,7 @@ def main(
             calendars=calendar_objects,
             prodid=prodid,
             method=method,
-            generate_vtimezone=not no_generate_vtimezone,
+            generate_vtimezone=generate_vtimezone,
             components=(
                 [p.strip() for p in components.split(",") if p.strip()]
                 if components

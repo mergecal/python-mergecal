@@ -50,14 +50,6 @@ def test_events_include_required_timezones(calendars):
     assert "Europe/London" in {tz.tz_name for tz in result.timezones}
 
 
-def test_select_vtimezone_only(calendars):
-    """components=['VTIMEZONE'] copies existing VTIMEZONE components, no events."""
-    result = merge_calendars(calendars.one_event.stream, components=["VTIMEZONE"])
-
-    assert len(list(result.events)) == 0
-    assert len(list(result.timezones)) == 1
-
-
 def test_calendar_merger_components_parameter(calendars):
     """CalendarMerger respects the components parameter."""
     result = CalendarMerger(
@@ -71,13 +63,13 @@ def test_calendar_merger_components_parameter(calendars):
 
 
 def test_empty_components_list(calendars):
-    """An empty components list produces an empty calendar."""
-    result = merge_calendars(calendars.color_rfc7986.stream, components=[])
+    """components=[] produces no events/todos/journals; timezones are unaffected."""
+    result = merge_calendars(calendars.one_event.stream, components=[])
 
     assert len(list(result.events)) == 0
     assert len(list(result.todos)) == 0
     assert len(result.journals) == 0
-    assert len(list(result.timezones)) == 0
+    assert "Europe/Berlin" in {tz.tz_name for tz in result.timezones}
 
 
 def test_generate_vtimezone_false_disables_generation(calendars):

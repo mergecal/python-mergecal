@@ -7,7 +7,7 @@ from x_wr_timezone import to_standard
 
 ComponentId = tuple[str, int, str | None]
 
-DEFAULT_COMPONENTS = ["VEVENT", "VTODO", "VJOURNAL", "VTIMEZONE"]
+DEFAULT_COMPONENTS = ["VEVENT", "VTODO", "VJOURNAL"]
 
 
 def calendars_from_ical(data: bytes) -> list[Calendar]:
@@ -72,7 +72,8 @@ class CalendarMerger:
                 referenced timezone IDs. Disable for performance when timezone
                 accuracy is not needed.
             components: Component types to include in the merge. Defaults to all
-                types: VEVENT, VTODO, VJOURNAL, VTIMEZONE. Pass a subset to filter.
+                event-like types: VEVENT, VTODO, VJOURNAL. Pass a subset to filter.
+                VTIMEZONEs are always included when present or generated.
 
         """
         self.merged_calendar = Calendar()
@@ -88,11 +89,10 @@ class CalendarMerger:
         self._merged = False
         self.generate_vtimezone = generate_vtimezone
         self._timezone_cache: dict[str, Timezone] = {}
-        self.components = (
-            [c.strip().upper() for c in components if c.strip()]
-            if components is not None
-            else list(DEFAULT_COMPONENTS)
-        )
+        if components is not None:
+            self.components = [c.strip().upper() for c in components if c.strip()]
+        else:
+            self.components = list(DEFAULT_COMPONENTS)
 
         for calendar in calendars:
             self.add_calendar(calendar)
@@ -107,16 +107,11 @@ class CalendarMerger:
             result.extend(cal.journals)
         return result
 
-    def _should_generate_timezones(self) -> bool:
-        return self.generate_vtimezone
-
     def add_calendar(self, calendar: Calendar) -> None:
         """Add a calendar to be merged."""
-        cal = to_standard(
-            calendar, add_timezone_component=self._should_generate_timezones()
-        )
+        cal = to_standard(calendar, add_timezone_component=self.generate_vtimezone)
 
-        if self._should_generate_timezones():
+        if self.generate_vtimezone:
             for tz in cal.timezones:
                 if tz.tz_name not in self._timezone_cache:
                     self._timezone_cache[tz.tz_name] = tz
