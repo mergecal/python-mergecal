@@ -130,6 +130,8 @@ module = "docs.*"
 ignore_errors = true
 
 [tool.semantic_release]
+allow_zero_version = true
+major_on_zero = false
 version_toml = [ "pyproject.toml:project.version" ]
 version_variables = [
   "src/mergecal/__init__.py:__version__",
