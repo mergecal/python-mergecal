@@ -91,7 +91,8 @@ class CalendarMerger:
             if calendar_color and not self.merged_calendar.color:
                 self.merged_calendar.color = calendar_color
 
-            for timezone in cal.timezones:
+            # to_standard() puts its generated VTIMEZONE before the calendar's own.
+            for timezone in reversed(cal.timezones):
                 if timezone.tz_name not in tzids:
                     self.merged_calendar.add_component(timezone)
                     tzids.add(timezone.tz_name)
