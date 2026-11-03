@@ -1,5 +1,26 @@
 # Changelog
 
+## v0.6.0 (2026-11-03)
+
+### Bug fixes
+
+- Make calendarmerger options keyword-only ([`9ba9e35`](https://github.com/mergecal/python-mergecal/commit/9ba9e3574f257a6182bc1fe4cac128bab1182394))
+- Raise runtimeerror when merge() is called more than once ([`f9da634`](https://github.com/mergecal/python-mergecal/commit/f9da63434245905011d5428ced297b3e50de5777))
+- Add type annotation to component_type fixture ([`a6f3189`](https://github.com/mergecal/python-mergecal/commit/a6f3189bf9b8f472b40d412e59220877d1cf85bc))
+- Correct cal_color type and add cross-calendar color preservation test ([`75d9895`](https://github.com/mergecal/python-mergecal/commit/75d989578b0dfcd87c396fab9b875ed3f246736b))
+
+### Documentation
+
+- Document intention not implementation in component_type fixture ([`e559e1f`](https://github.com/mergecal/python-mergecal/commit/e559e1fa9bedc9e29fdf5dc13458c0c3ed20e598))
+- Add list of features ([`d7647e9`](https://github.com/mergecal/python-mergecal/commit/d7647e9dff18a44ff0775f1a88e684047ccb912f))
+
+### Features
+
+- Use cal.journals and bump icalendar to >=7.0.2 ([`0f976bf`](https://github.com/mergecal/python-mergecal/commit/0f976bfa5715ab662941ad6e2eebe4525f13ac50))
+- Merge rfc 7986 color property for calendar components ([`58fded2`](https://github.com/mergecal/python-mergecal/commit/58fded2a5a6e4dedde42d31d1c4c30976e808adb))
+- Add calscale property to merged calendars for rfc 5545 compliance ([`d25e659`](https://github.com/mergecal/python-mergecal/commit/d25e659bb38139ba83b11103dc95174cc1375d2b))
+- Handle multiple vcalendar components in a single ics file ([`b87b8c0`](https://github.com/mergecal/python-mergecal/commit/b87b8c0d6266b59cb3bfbc6b85e9772883fce2cc))
+
 ## v0.5.0 (2025-02-06)
 
 ### Features
@@ -10,13 +31,15 @@
 
 ### Bug fixes
 
-- Remove unneccerasy conversion of recurrence ids to utc (#124) ([`78b0e2e`](https://github.com/mergecal/python-mergecal/commit/78b0e2ed9f5ae15108aa61d3651945f253abc066))
+- Remove unneccerasy conversion of recurrence ids to utc ([`78b0e2e`](https://github.com/mergecal/python-mergecal/commit/78b0e2ed9f5ae15108aa61d3651945f253abc066))
+- Remove unneccerasy conversion of recurrence_id ([`78b0e2e`](https://github.com/mergecal/python-mergecal/commit/78b0e2ed9f5ae15108aa61d3651945f253abc066))
 
 ## v0.4.1 (2025-01-31)
 
 ### Bug fixes
 
 - Prevent skipping events without uids during merge ([`ca27fcb`](https://github.com/mergecal/python-mergecal/commit/ca27fcb6d23ba79a643e262adf292fe65d7be848))
+- Prevent skipping events without uids during merge ([`c229666`](https://github.com/mergecal/python-mergecal/commit/c2296665a7ef85484e2ef2028411eaa2fbcc002a))
 
 ## v0.4.0 (2025-01-29)
 
@@ -24,43 +47,43 @@
 
 ### Bug fixes
 
-- Update dependency icalendar to v6.1.1 (#106) ([`9b1b2a6`](https://github.com/mergecal/python-mergecal/commit/9b1b2a6981aa3a14a17a9bb34a3a96434ead431b))
+- Update dependency icalendar to v6.1.1 ([`9b1b2a6`](https://github.com/mergecal/python-mergecal/commit/9b1b2a6981aa3a14a17a9bb34a3a96434ead431b))
 
 ## v0.3.13 (2024-12-04)
 
 ### Bug fixes
 
-- Update dependency typer to v0.15.1 (#89) ([`a035bc3`](https://github.com/mergecal/python-mergecal/commit/a035bc30b79a46c263a9455243cadaf0663a4096))
+- Update dependency typer to v0.15.1 ([`a035bc3`](https://github.com/mergecal/python-mergecal/commit/a035bc30b79a46c263a9455243cadaf0663a4096))
 
 ## v0.3.12 (2024-12-03)
 
 ### Bug fixes
 
-- Update dependency typer to ^0.15.0 (#87) ([`aca9fed`](https://github.com/mergecal/python-mergecal/commit/aca9fed1500616dde5ee67310dbc721bf26bbb2f))
+- Update dependency typer to ^0.15.0 ([`aca9fed`](https://github.com/mergecal/python-mergecal/commit/aca9fed1500616dde5ee67310dbc721bf26bbb2f))
 
 ## v0.3.11 (2024-11-29)
 
 ### Bug fixes
 
-- Update dependency typer to ^0.14.0 (#82) ([`b8173f8`](https://github.com/mergecal/python-mergecal/commit/b8173f8936274cd1091464ee3e3b004c3eada9ea))
+- Update dependency typer to ^0.14.0 ([`b8173f8`](https://github.com/mergecal/python-mergecal/commit/b8173f8936274cd1091464ee3e3b004c3eada9ea))
 
 ## v0.3.10 (2024-11-23)
 
 ### Bug fixes
 
-- Update dependency icalendar to v6.1.0 (#80) ([`e32be59`](https://github.com/mergecal/python-mergecal/commit/e32be59a430366f9c77705ad0df2f13a6ec1d81e))
+- Update dependency icalendar to v6.1.0 ([`e32be59`](https://github.com/mergecal/python-mergecal/commit/e32be59a430366f9c77705ad0df2f13a6ec1d81e))
 
 ## v0.3.9 (2024-11-19)
 
 ### Bug fixes
 
-- Update dependency typer to v0.13.1 (#78) ([`209a3b2`](https://github.com/mergecal/python-mergecal/commit/209a3b26bd9c326dc72fe2162aed72e197329b71))
+- Update dependency typer to v0.13.1 ([`209a3b2`](https://github.com/mergecal/python-mergecal/commit/209a3b26bd9c326dc72fe2162aed72e197329b71))
 
 ## v0.3.8 (2024-11-08)
 
 ### Bug fixes
 
-- Update dependency typer to ^0.13.0 (#70) ([`58eb230`](https://github.com/mergecal/python-mergecal/commit/58eb230ccc179a36618354280efc89591fce0f14))
+- Update dependency typer to ^0.13.0 ([`58eb230`](https://github.com/mergecal/python-mergecal/commit/58eb230ccc179a36618354280efc89591fce0f14))
 
 ## v0.3.7 (2024-11-01)
 
