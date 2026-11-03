@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.6.1 (2026-11-03)
+
+### Bug fixes
+
+- Require icalendar 7.1.3 or newer ([`cca97cd`](https://github.com/mergecal/python-mergecal/commit/cca97cdf25dfa746275c5f528e5013dccc4c581c))
+
 ## v0.6.0 (2026-11-03)
 
 ### Bug fixes
