@@ -48,6 +48,7 @@ class CalendarMerger:
     def __init__(
         self,
         calendars: list[Calendar],
+        *,
         prodid: str | None = None,
         version: str = "2.0",
         calscale: str = "GREGORIAN",
