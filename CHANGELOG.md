@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.6.2 (2026-11-08)
+
+### Bug fixes
+
+- Keep a calendar's own vtimezone over the generated one ([`d87c7af`](https://github.com/mergecal/python-mergecal/commit/d87c7af9c51e9dca80f4af9dba54432b45f98422))
+- Keep a calendar's own vtimezone over the generated one ([`d87c7af`](https://github.com/mergecal/python-mergecal/commit/d87c7af9c51e9dca80f4af9dba54432b45f98422))
+
 ## v0.6.1 (2026-11-03)
 
 ### Bug fixes
