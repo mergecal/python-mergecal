@@ -27,3 +27,17 @@ def test_x_wr_timezone_is_included(merge, calendars):
     calendar: Calendar = merge([calendars.x_wr_timezone])
     assert calendar.timezones[0].tz_name == "America/New_York"
     assert calendar.events[1].start.tzname() == "EST"
+
+
+def test_x_wr_timezone_keeps_the_calendars_own_timezone(merge, calendars):
+    """A VTIMEZONE from the source should not be replaced by a generated one."""
+    source: Calendar = calendars.teamsnap_x_wr_timezone
+    calendar: Calendar = merge([source])
+    assert len(calendar.timezones) == 1
+    observances = [
+        (observance.name, "RRULE" in observance, "RDATE" in observance)
+        for observance in calendar.timezones[0].subcomponents
+    ]
+    assert observances == [("DAYLIGHT", True, False), ("STANDARD", True, False)]
+    assert calendar.timezones[0].to_ical() == source.timezones[0].to_ical()
+    assert calendar.events[0]["DTSTART"].to_ical() == b"20261104T173040"
